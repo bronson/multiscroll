@@ -23,7 +23,7 @@
 
 // TODO: this needs fixing
     var autoscroll_speed = 0;
-    var autoscroll_debug = false;
+    var autoscroll_debug = true;
 
     // TODO: figure out why clientWidth and scrollWidth are not quite equal
     var crazyScrollSlop = 5; // in pixels, Chrome is 5, Mozilla is 4. wtf.
@@ -32,8 +32,11 @@
         var options = $.extend({}, $.fn.multiscroll.defaults, inopts);
 
         var frame = $(this);
+        frame.find('.leftHover').each(function() { installHover.call(this, frame, options) });
+        //frame.find('.rightHover').each(function() { installHover.call(this, options) });
+
         frame.mousedown(function(event) {
-            autoscroll(0);
+            autoscroll(frame, 0);
             frame.data('multiscroll', {
                 down: true, x: event.clientX, y: event.clientY,
                 scrollLeft: this.scrollLeft, scrollTop: this.scrollTop
@@ -55,7 +58,7 @@
                 }
             }
         }).mousewheel(function(event, delta) {
-            autoscroll(0);
+            autoscroll(frame, 0);
             if(this.scrollHeight > this.clientHeight + crazyScrollSlop) {
                 this.scrollTop -= (delta * options.wheelSpeed.y);
             } else {
@@ -67,36 +70,52 @@
         }).css({ 'overflow' : 'hidden' });
     }
 
-    function autoscroll(speed) {    // speed is in px/sec
+    function installHover(frame, options) {
+        var self = $(this);
+        self.mouseenter(function(event) {
+            self.fadeTo('fast', 0.4);
+        }).mouseleave(function(event) {
+            self.fadeTo('fast', 0);
+            autoscroll(frame, 0);
+        }).mousemove(function(event) {
+            var x = event.pageX - this.offsetLeft;
+            var speed = 1 - x / self.width();
+            autoscroll(frame, -speed*300); // TODO: get rid of this constant
+        }).height(frame.height()).css({ position: 'absolute', opacity: 0 });
+    }
+
+    function autoscroll(frame, speed) {    // speed is in px/sec
         function complete() {
             if(autoscroll_debug) console.log("animation complete");
             autoscroll_speed = 0;
         }
+
+        // TODO: don't autoscroll if we're already completely left or completely right
         if(speed === 0) {
             if(autoscroll_debug) console.log("stopping");
-            $("#timeline").stop();
-        } else if(Math.abs(speed - autoscroll_speed) > 7) {
-            if(autoscroll_debug) console.log("speed=" + speed + " autoscroll=" + autoscroll_speed);
-            var current = $("#timeline").scrollLeft();
-            var dur = (speed > 0) ? 1000 * (692 - current) / speed : 1000 * current / -speed;
-            $("#timeline").stop();
+            frame.stop();
+        } else if(Math.abs(speed - autoscroll_speed) > 7) {  // TODO get rid of this constant, just need to prevent switching scrolling speeds every time the mouse moves
+            var current = frame.scrollLeft();
+            var unseen = frame[0].scrollWidth - frame[0].clientWidth;
+            var duration = (speed > 0) ? 1000 * (unseen - current) / speed : 1000 * current / -speed;
+            frame.stop();
             if(autoscroll_speed === 0) {
                 // use easing to start
                 if(speed > 0) {
-                    if(autoscroll_debug) console.log("easing right at " + speed + " for " + dur);
-                    $("#timeline").animate({ scrollLeft: 692 }, dur, "swing", complete);
+                    if(autoscroll_debug) console.log("easing right at " + speed + " for " + duration);
+                    frame.animate({ scrollLeft: 692 }, duration, "swing", complete);
                 } else {
-                    if(autoscroll_debug) console.log("easing left at " + speed + " for " + dur);
-                    $("#timeline").animate({ scrollLeft: 0 }, dur, "swing", complete);
+                    if(autoscroll_debug) console.log("easing left at " + speed + " for " + duration);
+                    frame.animate({ scrollLeft: 0 }, duration, "swing", complete);
                 }
             } else {
                 // already moving, easing would make it look jumpy
                 if(speed > 0) {
-                    if(autoscroll_debug) console.log("switching right at " + speed + " for " + dur);
-                    $("#timeline").animate({ scrollLeft: 692 }, dur, "linear", complete);
+                    if(autoscroll_debug) console.log("switching right at " + speed + " for " + duration);
+                    frame.animate({ scrollLeft: 692 }, duration, "linear", complete);
                 } else {
-                    if(autoscroll_debug) console.log("switching left at " + speed + " for " + dur);
-                    $("#timeline").animate({ scrollLeft: 0 }, 1000 * current / -speed, "linear", complete);
+                    if(autoscroll_debug) console.log("switching left at " + speed + " for " + duration);
+                    frame.animate({ scrollLeft: 0 }, 1000 * current / -speed, "linear", complete);
                 }
             }
         }

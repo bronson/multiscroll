@@ -12,6 +12,10 @@
       .scrollable {
         height: 273px;
       }
+      .leftHover, .rightHover {
+        background-color: gray;
+        width: 150px;  /* if no height then multiscroll will give them the same height as the frame */
+      }
     </style>
     <script type="text/javascript" src="jquery-1.7.1.js"/></script>
     <script type="text/javascript" src="jquery.mousewheel.js"></script>
@@ -25,6 +29,7 @@
     <h3>horizontal scroll:</h3>
     <p><em>content height &lt;= frame height</em></p>
     <div class="show-border"><div class='scrollable'>
+      <div class="leftHover"><p>&lt;&lt; left</p></div>
       <img alt="Panorama of Beirut" title="Panorama of Beirut" src="http://upload.wikimedia.org/wikipedia/commons/thumb/b/b0/%D8%A8%D9%8A%D8%B1%D9%88%D8%AA-%D8%A7%D9%84%D9%82%D8%B1%D9%86_%D9%A1%D9%A9.jpg/1280px-%D8%A8%D9%8A%D8%B1%D9%88%D8%AA-%D8%A7%D9%84%D9%82%D8%B1%D9%86_%D9%A1%D9%A9.jpg" width="1280" height="273">
     </div></div>
 
