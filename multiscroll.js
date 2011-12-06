@@ -40,9 +40,16 @@
             }
         }).mousemove(function(event) {
             var data = frame.data('multiscroll');
+            // TODO: figure out why clientWidth and scrollWidth are not quite equal
+            var crazyScrollSlop = 5; // in pixels, Chrome is 5, Mozilla is 4. wtf.
             if(data && data.down == true) {
-                this.scrollLeft = data.scrollLeft + data.x - event.clientX;
-                this.scrollTop = data.scrollTop + data.y - event.clientY;
+                // if we scroll w/o checking, some browsers will have unsightly bouncing
+                if(this.scrollWidth > this.clientWidth + crazyScrollSlop) {
+                    this.scrollLeft = data.scrollLeft + data.x - event.clientX;
+                }
+                if(this.scrollHeight > this.clientHeight + crazyScrollSlop) {
+                    this.scrollTop = data.scrollTop + data.y - event.clientY;
+                }
             } else {
                 wasIn = true;
 /*  hoverscroll
