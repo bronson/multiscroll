@@ -13,15 +13,24 @@
 
 (function($) {
     $.fn.multiscroll = function(params) {
-        return this.each(install);
+        return this.each(function() { install.call(this, params); });
     };
 
+    $.fn.multiscroll.defaults = {
+        wheelSpeed: { x: 30, y: 30 }
+    };
+
+
 // TODO: this needs fixing
-    var wasIn = false;
     var autoscroll_speed = 0;
     var autoscroll_debug = false;
 
-    function install() {
+    // TODO: figure out why clientWidth and scrollWidth are not quite equal
+    var crazyScrollSlop = 5; // in pixels, Chrome is 5, Mozilla is 4. wtf.
+
+    function install(inopts) {
+        var options = $.extend({}, $.fn.multiscroll.defaults, inopts);
+
         var frame = $(this);
         frame.mousedown(function(event) {
             autoscroll(0);
@@ -34,14 +43,8 @@
             frame.data('multiscroll', {down: false});
         }).mouseleave(function(event) {
             frame.data('multiscroll', {down: false});
-            if(wasIn) {
-                autoscroll(0);
-                wasIn = false;
-            }
         }).mousemove(function(event) {
             var data = frame.data('multiscroll');
-            // TODO: figure out why clientWidth and scrollWidth are not quite equal
-            var crazyScrollSlop = 5; // in pixels, Chrome is 5, Mozilla is 4. wtf.
             if(data && data.down == true) {
                 // if we scroll w/o checking, some browsers will have unsightly bouncing
                 if(this.scrollWidth > this.clientWidth + crazyScrollSlop) {
@@ -50,31 +53,18 @@
                 if(this.scrollHeight > this.clientHeight + crazyScrollSlop) {
                     this.scrollTop = data.scrollTop + data.y - event.clientY;
                 }
-            } else {
-                wasIn = true;
-/*  hoverscroll
-                var left = frame.offset().left;
-                var right = left + frame.width();
-                if(event.pageX < left + 150) {
-                    var lspeed = 1 - (event.pageX - left) / 150;  // range 0..1
-                    if(frame.scrollLeft() > 0) autoscroll(-lspeed*300);
-                } else if(event.pageX > right - 150) {
-                    var rspeed = 1 - (right - event.pageX) / 150;
-                    if(frame.scrollLeft() < 682) autoscroll(rspeed*300);
-                } else {
-                    if(autoscroll_speed !== 0) autoscroll(0);
-                }
-*/
             }
         }).mousewheel(function(event, delta) {
             autoscroll(0);
-            frame.scrollLeft -= (delta * 30);
-            frame.scrollTop -= (delta * 30);
+            if(this.scrollHeight > this.clientHeight + crazyScrollSlop) {
+                this.scrollTop -= (delta * options.wheelSpeed.y);
+            } else {
+                if(this.scrollWidth > this.clientWidth + crazyScrollSlop) {
+                    this.scrollLeft -= (delta * options.wheelSpeed.x);
+                }
+            }
             return false;
-        }).css({
-            'overflow' : 'hidden',
-            'cursor'   : '-moz-grab'
-        });
+        }).css({ 'overflow' : 'hidden' });
     }
 
     function autoscroll(speed) {    // speed is in px/sec
