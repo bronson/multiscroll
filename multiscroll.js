@@ -26,6 +26,7 @@
     var autoscroll_debug = true;
 
     // TODO: figure out why clientWidth and scrollWidth are not quite equal
+    // Gotta be the same thing as the border test showing white at the bottom.
     var crazyScrollSlop = 5; // in pixels, Chrome is 5, Mozilla is 4. wtf.
 
     function install(inopts) {
