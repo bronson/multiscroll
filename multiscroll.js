@@ -32,8 +32,8 @@
         var options = $.extend({}, $.fn.multiscroll.defaults, inopts);
 
         var frame = $(this);
-        frame.find('.leftHover').each(function() { installHover.call(this, frame, options) });
-        //frame.find('.rightHover').each(function() { installHover.call(this, options) });
+        frame.find('.leftHover').each(function() { installLeftHover($(this), frame, options) });
+        frame.find('.rightHover').each(function() { installRightHover($(this), frame, options) });
 
         frame.mousedown(function(event) {
             autoscroll(frame, 0);
@@ -70,18 +70,37 @@
         }).css({ 'overflow' : 'hidden' });
     }
 
-    function installHover(frame, options) {
-        var self = $(this);
+    // sets the given element to fade in and out on hover
+    function installHoverFade(self, frame, options) {
         self.mouseenter(function(event) {
             self.fadeTo('fast', 0.4);
         }).mouseleave(function(event) {
             self.fadeTo('fast', 0);
             autoscroll(frame, 0);
-        }).mousemove(function(event) {
+        }).css({ position: 'absolute', opacity: 0 });
+    }
+
+    function installHorizHover(self, frame, options) {
+        installHoverFade(self, frame, options)
+        self.height(frame.height())
+    }
+
+    function installLeftHover(self, frame, options) {
+        installHorizHover(self, frame, options);
+        self.mousemove(function(event) {
             var x = event.pageX - this.offsetLeft;
             var speed = 1 - x / self.width();
             autoscroll(frame, -speed*300); // TODO: get rid of this constant
-        }).height(frame.height()).css({ position: 'absolute', opacity: 0 });
+        }).css({left: frame.position().left + 'px'});
+    }
+
+    function installRightHover(self, frame, options) {
+        installHorizHover(self, frame, options);
+        self.mousemove(function(event) {
+            var x = event.pageX - this.offsetLeft;
+            var speed = 1 - (self.width() - x) / self.width();
+            autoscroll(frame, speed*300); // TODO: get rid of this constant
+        }).css({left: (frame.position().left + frame[0].clientWidth - self.width()) + 'px'});
     }
 
     function autoscroll(frame, speed) {    // speed is in px/sec
@@ -103,7 +122,7 @@
                 // use easing to start
                 if(speed > 0) {
                     if(autoscroll_debug) console.log("easing right at " + speed + " for " + duration);
-                    frame.animate({ scrollLeft: 692 }, duration, "swing", complete);
+                    frame.animate({ scrollLeft: unseen }, duration, "swing", complete);
                 } else {
                     if(autoscroll_debug) console.log("easing left at " + speed + " for " + duration);
                     frame.animate({ scrollLeft: 0 }, duration, "swing", complete);
@@ -112,7 +131,7 @@
                 // already moving, easing would make it look jumpy
                 if(speed > 0) {
                     if(autoscroll_debug) console.log("switching right at " + speed + " for " + duration);
-                    frame.animate({ scrollLeft: 692 }, duration, "linear", complete);
+                    frame.animate({ scrollLeft: unseen }, duration, "linear", complete);
                 } else {
                     if(autoscroll_debug) console.log("switching left at " + speed + " for " + duration);
                     frame.animate({ scrollLeft: 0 }, 1000 * current / -speed, "linear", complete);

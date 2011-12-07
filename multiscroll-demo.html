@@ -12,9 +12,10 @@
       .scrollable {
         height: 273px;
       }
+      /* inside a multiscrollable div, you can have hover regions */
       .leftHover, .rightHover {
         background-color: gray;
-        width: 150px;  /* if no height then multiscroll will give them the same height as the frame */
+        width: 150px; /* multiscroll will automatically make them full height and position them */
       }
     </style>
     <script type="text/javascript" src="jquery-1.7.1.js"/></script>
@@ -30,6 +31,7 @@
     <p><em>content height &lt;= frame height</em></p>
     <div class="show-border"><div class='scrollable'>
       <div class="leftHover"><p>&lt;&lt; left</p></div>
+      <div class="rightHover"><p>right &gt;&gt;</p></div>
       <img alt="Panorama of Beirut" title="Panorama of Beirut" src="http://upload.wikimedia.org/wikipedia/commons/thumb/b/b0/%D8%A8%D9%8A%D8%B1%D9%88%D8%AA-%D8%A7%D9%84%D9%82%D8%B1%D9%86_%D9%A1%D9%A9.jpg/1280px-%D8%A8%D9%8A%D8%B1%D9%88%D8%AA-%D8%A7%D9%84%D9%82%D8%B1%D9%86_%D9%A1%D9%A9.jpg" width="1280" height="273">
     </div></div>
 
