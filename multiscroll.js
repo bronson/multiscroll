@@ -7,8 +7,10 @@
  *
  * Version 0.8
  *
+ * TODO: up & down hoverscroll
  * TODO: append a giant div on click so we can scroll outside confines of frame
  * TODO: get rid of mousewheel dependency?
+ * TODO: hoverscroll parameters: hoverscrollMinSpeed, hoverscrollMaxSpeed, hoverscrollSteps
  */
 
 (function($) {
@@ -81,13 +83,13 @@
         }).css({ position: 'absolute', opacity: 0 });
     }
 
-    function installHorizHover(self, frame, options) {
-        installHoverFade(self, frame, options)
-        self.height(frame.height())
+    function installHorizontalHover(self, frame, options) {
+        installHoverFade(self, frame, options);
+        self.height(frame.height());
     }
 
     function installLeftHover(self, frame, options) {
-        installHorizHover(self, frame, options);
+        installHorizontalHover(self, frame, options);
         self.mousemove(function(event) {
             var x = event.pageX - this.offsetLeft;
             var speed = 1 - x / self.width();
@@ -96,7 +98,7 @@
     }
 
     function installRightHover(self, frame, options) {
-        installHorizHover(self, frame, options);
+        installHorizontalHover(self, frame, options);
         self.mousemove(function(event) {
             var x = event.pageX - this.offsetLeft;
             var speed = 1 - (self.width() - x) / self.width();
@@ -110,7 +112,12 @@
             autoscroll_speed = 0;
         }
 
+        // if user is dragging, don't turn on an autoscroll
+        var data = frame.data('multiscroll');
+        if(data && data.down == true) return;
+
         // TODO: don't autoscroll if we're already completely left or completely right
+
         if(speed === 0) {
             if(autoscroll_debug) console.log("stopping");
             frame.stop();
