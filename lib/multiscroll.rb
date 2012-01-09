@@ -1,4 +1,3 @@
 module Multiscroll
-  class Engine < Rails::Engine
-  end
+  require 'multiscroll/engine'
 end
