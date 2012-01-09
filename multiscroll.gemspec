@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name        = "multiscroll"
-  s.version     = "0.0.1"
+  s.version     = "0.0.3"
   s.authors     = ["Scott Bronson"]
   s.email       = ["bronsmultiscrollspec@rinspin.com"]
   s.homepage    = "http://github.com/bronson/multiscroll"
