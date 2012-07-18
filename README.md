@@ -9,12 +9,16 @@ Dependencies: mousewheel plugin (for now)
 
 - In your Gemfile:
 
-    gem 'multiscroll', :git => 'git://github.com/bronson/multiscroll.git
+```ruby
+gem 'multiscroll', :git => 'git://github.com/bronson/multiscroll.git'
+```
 
 - In app/assets/javascripts/application.js:
 
-    require jquery.mousewheel
-    require multiscroll
+```javascript
+//= require jquery.mousewheel
+//= require multiscroll
+```
 
 
 ## Acknowledgements
