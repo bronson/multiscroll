@@ -7,6 +7,7 @@
  *
  * Version 0.8
  *
+ * TODO: don't use easing.  compute it internally.
  * TODO: up & down hoverscroll
  * TODO: append a giant div on click so we can scroll outside confines of frame
  * TODO: get rid of mousewheel dependency?
@@ -19,20 +20,21 @@
     };
 
     $.fn.multiscroll.defaults = {
+        startingSpeed: { x: 0, y: 0 },
         wheelSpeed: { x: 30, y: 30 }
     };
 
 
 // TODO: this needs fixing
     var autoscroll_speed = 0;
-    var autoscroll_debug = true;
+    var autoscroll_debug = false;
 
     // TODO: figure out why clientWidth and scrollWidth are not quite equal
     // Gotta be the same thing as the border test showing white at the bottom.
     var crazyScrollSlop = 5; // in pixels, Chrome is 5, Mozilla is 4. wtf.
 
     function install(inopts) {
-        var options = $.extend({}, $.fn.multiscroll.defaults, inopts);
+        var options = $.extend(true, {}, $.fn.multiscroll.defaults, inopts);
 
         var frame = $(this);
         frame.find('.leftHover').each(function() { installLeftHover($(this), frame, options) });
@@ -71,6 +73,8 @@
             }
             return false;
         }).css({ 'overflow' : 'hidden' });
+
+        autoscroll(frame, options.startingSpeed.x)
     }
 
     // sets the given element to fade in and out on hover

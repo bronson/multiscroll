@@ -23,13 +23,16 @@
     <script type="text/javascript" src="../vendor/assets/javascripts/multiscroll.js"/></script>
     <script type="text/javascript">
       // Just call multiscroll on the frame divs you want to be scrolled
-      $(function() { $('.scrollable').multiscroll(); });
+      $(function() {
+          $('.kickable').multiscroll({startingSpeed:{x:25}})
+          $('.scrollable').multiscroll();
+      });
     </script>
   </head>
   <body>
     <h3>horizontal scroll:</h3>
     <p><em>content height &lt;= frame height</em></p>
-    <div class="show-border"><div class='scrollable'>
+    <div class="show-border"><div class='kickable'>
       <div class="leftHover"><p>&lt;&lt; left</p></div>
       <div class="rightHover"><p>right &gt;&gt;</p></div>
       <img alt="Panorama of Beirut" title="Panorama of Beirut" src="http://upload.wikimedia.org/wikipedia/commons/thumb/b/b0/%D8%A8%D9%8A%D8%B1%D9%88%D8%AA-%D8%A7%D9%84%D9%82%D8%B1%D9%86_%D9%A1%D9%A9.jpg/1280px-%D8%A8%D9%8A%D8%B1%D9%88%D8%AA-%D8%A7%D9%84%D9%82%D8%B1%D9%86_%D9%A1%D9%A9.jpg" width="1280" height="273">
