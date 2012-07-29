@@ -1,15 +1,26 @@
 <!doctype html>
 <html>
   <head>
-    <title>MultiScroll Demo</title>
+    <title>MultiScroll - jQuery Scrolling Plugin</title>
     <meta charset="utf-8">
+    <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.0.4/css/bootstrap-combined.min.css"></link>
+    <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery/1.7.2/jquery.min.js"/></script>
+    <script type="text/javascript" src="../vendor/assets/javascripts/jquery.mousewheel.js"></script>
+    <script type="text/javascript" src="../vendor/assets/javascripts/multiscroll.js"/></script>
+
+    <script type="text/javascript">
+      $(function() {
+          $('.multiscrollable').multiscroll();
+      });
+    </script>
+
     <style type="text/css">
       .show-border {
         border: 1px solid gray;
         margin-left: 2em;
         width: 500px;
       }
-      .scrollable {
+      .multiscrollable {
         height: 273px;
       }
       /* inside a multiscrollable div, you can have hover regions */
@@ -18,29 +29,28 @@
         width: 150px; /* multiscroll will automatically make them full height and position them */
       }
     </style>
-    <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery/1.7.2/jquery.min.js"/></script>
-    <script type="text/javascript" src="../vendor/assets/javascripts/jquery.mousewheel.js"></script>
-    <script type="text/javascript" src="../vendor/assets/javascripts/multiscroll.js"/></script>
-    <script type="text/javascript">
-      // Just call multiscroll on the frame divs you want to be scrolled
-      $(function() {
-          $('.kickable').multiscroll({startingSpeed:{x:25}})
-          $('.scrollable').multiscroll();
-      });
-    </script>
   </head>
+
   <body>
     <h3>horizontal scroll:</h3>
     <p><em>content height &lt;= frame height</em></p>
-    <div class="show-border"><div class='kickable'>
-      <div class="leftHover"><p>&lt;&lt; left</p></div>
-      <div class="rightHover"><p>right &gt;&gt;</p></div>
-      <img alt="Panorama of Beirut" title="Panorama of Beirut" src="http://upload.wikimedia.org/wikipedia/commons/thumb/b/b0/%D8%A8%D9%8A%D8%B1%D9%88%D8%AA-%D8%A7%D9%84%D9%82%D8%B1%D9%86_%D9%A1%D9%A9.jpg/1280px-%D8%A8%D9%8A%D8%B1%D9%88%D8%AA-%D8%A7%D9%84%D9%82%D8%B1%D9%86_%D9%A1%D9%A9.jpg" width="1280" height="273">
-    </div></div>
+
+    <div class="show-border">
+      <div id='intro'>
+        <div class="leftHover"><p>&lt;&lt; left</p></div>
+        <div class="rightHover"><p>right &gt;&gt;</p></div>
+        <img alt="Panorama of Beirut" title="Panorama of Beirut" src="http://upload.wikimedia.org/wikipedia/commons/thumb/b/b0/%D8%A8%D9%8A%D8%B1%D9%88%D8%AA-%D8%A7%D9%84%D9%82%D8%B1%D9%86_%D9%A1%D9%A9.jpg/1280px-%D8%A8%D9%8A%D8%B1%D9%88%D8%AA-%D8%A7%D9%84%D9%82%D8%B1%D9%86_%D9%A1%D9%A9.jpg" width="1280" height="273">
+      </div>
+      <script type="text/javascript">
+        $(function() {
+          $('#intro').multiscroll({startingSpeed:{x:25}})
+        });
+      </script>
+    </div>
 
     <h3>vertical scroll:</h3>
     <p><em>content wraps so content width &lt;= frame width</em></p>
-    <div class="show-border"><div class='scrollable'>
+    <div class="show-border"><div class='multiscrollable'>
 
 <!-- a bunch of wrapping content -->
 <h3>Michael Bluth</h3>
@@ -103,14 +113,14 @@
 
     <h3>scroll both axes:</h3>
     <p><em>content height and width are greater than frame height and width</em></p>
-    <div class="show-border"><div class='scrollable'>
+    <div class="show-border"><div class='multiscrollable'>
       <p>N-Channel JFET Response Curve:</p>
       <img alt="Panorama of Beirut" title="Panorama of Beirut" src="http://upload.wikimedia.org/wikipedia/commons/thumb/5/50/JFET_n-channel_en.svg/1000px-JFET_n-channel_en.svg.png" width="1000" height="438">
     </div></div>
 
     <h3>scroll right to the borders:</h3>
     <p><em>makes sure there are no off-by-one errors. anyone know why there's a 4-5px white border at the bottom?</em></p>
-    <div class="show-border"><div class='scrollable'>
+    <div class="show-border"><div class='multiscrollable'>
       <div class="leftHover"></div>
       <div class="rightHover"></div>
       <img alt="Border Test Image" title="Border Test Image" src="bordertest.png" width="800" height="800">
