@@ -1,0 +1,7 @@
+#!/bin/sh
+
+# gh-pages should always be identical to master.  This way the docs are guaranteed
+# to always be up to date.  Now if only I could find a way to configure git to make
+# this happen automatically...
+
+git push origin master master:gh-pages
