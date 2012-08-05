@@ -1,11 +1,35 @@
 <!doctype html>
-<html>
+<html lang='en'>
   <head>
     <title>MultiScroll - jQuery Scrolling Plugin</title>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
     <link href="vendor/bootstrap-2.0.4.min.css"></link>
-    <script type="text/javascript" src="vendor/jquery-1.7.2.min.js"/></script>
-    <script type="text/javascript" src="vendor/bootstrap-2.0.4.min.js"/></script>
+
+    <script type="text/javascript">
+      function getURLParameter(name) {
+          return decodeURIComponent((new RegExp(
+            '[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)'
+          ).exec(location.search)||[,""])[1].replace(/\+/g, '%20')) || null
+      }
+
+      function script(name) {
+        var i = name.lastIndexOf('.')
+        if(!getURLParameter('nomin')) name = name.substr(0,i) + '.min' + name.substr(i)
+        document.write('<script type="text/javascript" src="' + name + '"><' + '/script>')
+      }
+
+      var jqver = getURLParameter('jqver') || '1.7.2'
+      script('vendor/jquery-' + jqver + '.js')
+      if(jqver >= '1.7.2') script('vendor/bootstrap-2.0.4/bootstrap.js')
+    </script>
+
     <script type="text/javascript" src="./jquery.mousewheel.js"></script>
     <script type="text/javascript" src="./multiscroll.js"/></script>
 
@@ -35,8 +59,16 @@
   <body>
     <a href="https://github.com/bronson/multiscroll"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_orange_ff7600.png" alt="Fork me on GitHub"></a>
 
-    <h1>Multiscroll</h1>
-    <h2>The jQuery Plugin</h2>
+    <div class='container'>
+
+      <header class='jumbotron masthead'>
+        <div class='inner'>
+          <h1>Multiscroll</h1>
+          <p>A jQuery plugin to scroll a div using any combination of common techniques.</p>
+        </div>
+      </header>
+
+      <hr class='soften'>
 
     <h3>horizontal scroll:</h3>
     <p><em>content height &lt;= frame height</em></p>
