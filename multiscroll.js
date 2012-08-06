@@ -54,15 +54,18 @@
                 scrollLeft: this.scrollLeft,
                 scrollTop: this.scrollTop
             })
+            frame.addClass('dragging')
             frame.trigger('dragStart')
             return false
         }).mouseup(function(event) {
             var data = frame.data('multiscroll')
             if(data.down) frame.trigger('dragStop')
+            frame.removeClass('dragging')
             data.down = false
         }).mouseleave(function(event) {
             var data = frame.data('multiscroll')
             if(data.down) frame.trigger('dragStop')
+            frame.removeClass('dragging')
             data.down = false
         }).mousemove(function(event) {
             var data = frame.data('multiscroll')
