@@ -86,8 +86,13 @@
       <script type="text/javascript">
         $(function() {
           $('#intro').multiscroll({startingSpeed:{x:25}})
+            .on('dragStart', function() { $('#introindicator').show() })
+            .on('dragStop', function() { $('#introindicator').hide() })
         });
       </script>
+    </div>
+    <div id='introindicator' style='display:none'>
+      DRAGGING
     </div>
 
     <h3>vertical scroll:</h3>

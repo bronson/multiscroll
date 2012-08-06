@@ -46,7 +46,7 @@
         });
 
         frame.mousedown(function(event) {
-            autoscroll(frame, 0);
+            autoscroll(frame, 0)
             $.extend(frame.data('multiscroll'), {
                 down: true,
                 x: event.clientX,
@@ -54,30 +54,35 @@
                 scrollLeft: this.scrollLeft,
                 scrollTop: this.scrollTop
             })
-            return false;
+            frame.trigger('dragStart')
+            return false
         }).mouseup(function(event) {
-            frame.data('multiscroll').down = false
+            var data = frame.data('multiscroll')
+            if(data.down) frame.trigger('dragStop')
+            data.down = false
         }).mouseleave(function(event) {
-            frame.data('multiscroll').down = false
+            var data = frame.data('multiscroll')
+            if(data.down) frame.trigger('dragStop')
+            data.down = false
         }).mousemove(function(event) {
-            var data = frame.data('multiscroll');
+            var data = frame.data('multiscroll')
             if(data && data.down == true) {
                 // if we scroll w/o checking, some browsers will have unsightly bouncing
                 if(this.scrollWidth > this.clientWidth + crazyScrollSlop) {
-                    this.scrollLeft = data.scrollLeft + data.x - event.clientX;
+                    this.scrollLeft = data.scrollLeft + data.x - event.clientX
                 }
                 if(this.scrollHeight > this.clientHeight + crazyScrollSlop) {
-                    this.scrollTop = data.scrollTop + data.y - event.clientY;
+                    this.scrollTop = data.scrollTop + data.y - event.clientY
                 }
             }
         }).mousewheel(function(event, delta, deltax, deltay) {
             autoscroll(frame, 0);
             // TODO: handle more common deltay scroll too
             if(this.scrollWidth > this.clientWidth + crazyScrollSlop) {
-                this.scrollLeft += (deltax * options.wheelSpeed.x);
+                this.scrollLeft += (deltax * options.wheelSpeed.x)
             }
-            return false;
-        }).css({ 'overflow' : 'hidden' });
+            return false
+        }).css({ 'overflow' : 'hidden' })
 
         autoscroll(frame, options.startingSpeed.x)
     }
