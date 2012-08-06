@@ -73,6 +73,10 @@
     <h3>horizontal scroll:</h3>
     <p><em>content height &lt;= frame height</em></p>
 
+      <form onSubmit='$("#intro").data("multiscroll").autoscroll(this.speed.value); return false'>
+        Speed: <input name='speed' type='text'>
+      </form>
+
     <div class="show-border">
       <div id='intro'>
         <div class="leftHover"><p>&lt;&lt; left</p></div>

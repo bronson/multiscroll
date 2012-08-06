@@ -40,12 +40,18 @@
         frame.find('.leftHover').each(function() { installLeftHover($(this), frame, options) });
         frame.find('.rightHover').each(function() { installRightHover($(this), frame, options) });
 
+        frame.data('multiscroll', {
+            down: false,
+            x: event.clientX,
+            y: event.clientY,
+            scrollLeft: this.scrollLeft,
+            scrollTop: this.scrollTop,
+            autoscroll: function(speed) { autoscroll(frame, parseInt(speed, 10)) }
+        });
+
         frame.mousedown(function(event) {
             autoscroll(frame, 0);
-            frame.data('multiscroll', {
-                down: true, x: event.clientX, y: event.clientY,
-                scrollLeft: this.scrollLeft, scrollTop: this.scrollTop
-            });
+            frame.data('multiscroll', {down: true});
             return false;
         }).mouseup(function(event) {
             frame.data('multiscroll', {down: false});
