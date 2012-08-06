@@ -70,14 +70,11 @@
                     this.scrollTop = data.scrollTop + data.y - event.clientY;
                 }
             }
-        }).mousewheel(function(event, delta) {
+        }).mousewheel(function(event, delta, deltax, deltay) {
             autoscroll(frame, 0);
-            if(this.scrollHeight > this.clientHeight + crazyScrollSlop) {
-                this.scrollTop -= (delta * options.wheelSpeed.y);
-            } else {
-                if(this.scrollWidth > this.clientWidth + crazyScrollSlop) {
-                    this.scrollLeft -= (delta * options.wheelSpeed.x);
-                }
+            // TODO: handle more common deltay scroll too
+            if(this.scrollWidth > this.clientWidth + crazyScrollSlop) {
+                this.scrollLeft += (deltax * options.wheelSpeed.x);
             }
             return false;
         }).css({ 'overflow' : 'hidden' });
