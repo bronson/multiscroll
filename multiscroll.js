@@ -56,9 +56,9 @@
             })
             return false;
         }).mouseup(function(event) {
-            frame.data('multiscroll', {down: false});
+            frame.data('multiscroll').down = false
         }).mouseleave(function(event) {
-            frame.data('multiscroll', {down: false});
+            frame.data('multiscroll').down = false
         }).mousemove(function(event) {
             var data = frame.data('multiscroll');
             if(data && data.down == true) {
